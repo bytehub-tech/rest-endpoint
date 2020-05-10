@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import in.co.bytehub.learn.rest.controller.model.Person;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Service("personServiceInMemory")
 public class PersonServiceInMemory implements PersonService {
@@ -38,6 +41,12 @@ public class PersonServiceInMemory implements PersonService {
 	@Override
 	public void deletePerson(Integer id) {
 		storage.remove(id);
+	}
+	
+	@Override
+	public Page<Person> getPerson(Pageable pageable){
+		throw new RuntimeException("Not Implemented Method");
+		
 	}
 
 }

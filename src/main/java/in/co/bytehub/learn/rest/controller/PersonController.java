@@ -4,6 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +38,15 @@ public class PersonController {
 	public List<Person> getAllPerson() {
 		System.out.println("GET: /person called");
 		return service.getAllPerson();
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/person.search")
+	public Page<Person> getAllPersonWithPagination(@RequestParam("size") Integer size,
+			@RequestParam("startIndex") Integer startIndex) {
+		System.out.println("PersonController.getAllPersonWithPagination()");
+		PageRequest pageRequest = PageRequest.of(startIndex, size, Sort.by(Direction.DESC, "name"));
+		return service.getPerson(pageRequest);
 	}
 
 	@GetMapping("/person/{id}")

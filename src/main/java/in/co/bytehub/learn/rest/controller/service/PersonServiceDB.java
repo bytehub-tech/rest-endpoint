@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import in.co.bytehub.learn.rest.controller.model.Person;
@@ -45,6 +47,12 @@ public class PersonServiceDB implements PersonService {
 	public void deletePerson(Integer id) {
 		personRepo.deleteById(id);
 
+	}
+	
+	@Override
+	public Page<Person> getPerson(Pageable pageable){
+		return personRepo.findAll(pageable);
+		
 	}
 
 }
