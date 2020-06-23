@@ -7,11 +7,11 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import in.co.bytehub.learn.rest.controller.model.Person;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import in.co.bytehub.learn.rest.exception.NotImplementedException;
 
 @Service("personServiceInMemory")
 public class PersonServiceInMemory implements PersonService {
@@ -42,11 +42,11 @@ public class PersonServiceInMemory implements PersonService {
 	public void deletePerson(Integer id) {
 		storage.remove(id);
 	}
-	
+
 	@Override
-	public Page<Person> getPerson(Pageable pageable){
-		throw new RuntimeException("Not Implemented Method");
-		
+	public Page<Person> getPerson(Pageable pageable) {
+		throw new NotImplementedException(HttpStatus.NOT_IMPLEMENTED, "Not Implemented Method");
+
 	}
 
 }

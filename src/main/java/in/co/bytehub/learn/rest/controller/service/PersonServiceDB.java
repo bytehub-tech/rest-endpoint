@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import in.co.bytehub.learn.rest.controller.model.Person;
+import in.co.bytehub.learn.rest.exception.NotFoundException;
 import in.co.bytehub.learn.rest.repo.PersonRepo;
 
 @Service(value = "personServiceFromDB")
@@ -26,7 +28,8 @@ public class PersonServiceDB implements PersonService {
 
 	@Override
 	public Person getPerson(Integer id) {
-		return personRepo.findById(id).orElseThrow(() -> new RuntimeException("Record Not Found for Id:" + id));
+		return personRepo.findById(id)
+				.orElseThrow(() -> new NotFoundException(HttpStatus.NOT_FOUND, "Record not found for id : " + id));
 	}
 
 	@Override
@@ -48,11 +51,11 @@ public class PersonServiceDB implements PersonService {
 		personRepo.deleteById(id);
 
 	}
-	
+
 	@Override
-	public Page<Person> getPerson(Pageable pageable){
+	public Page<Person> getPerson(Pageable pageable) {
 		return personRepo.findAll(pageable);
-		
+
 	}
 
 }

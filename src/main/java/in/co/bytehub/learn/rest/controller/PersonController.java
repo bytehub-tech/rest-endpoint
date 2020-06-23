@@ -2,6 +2,8 @@ package in.co.bytehub.learn.rest.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,7 @@ import in.co.bytehub.learn.rest.controller.service.PersonService;
 public class PersonController {
 
 	private PersonService service;
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonController.class);
 
 	public PersonController(@Qualifier("personServiceFromDB") PersonService service) {
 		this.service = service;
@@ -44,27 +47,27 @@ public class PersonController {
 	@GetMapping("/person.search")
 	public Page<Person> getAllPersonWithPagination(@RequestParam("size") Integer size,
 			@RequestParam("startIndex") Integer startIndex) {
-		System.out.println("PersonController.getAllPersonWithPagination()");
+		LOGGER.info("/person.search:  size = {}, startIndex = {}", size, startIndex);
 		PageRequest pageRequest = PageRequest.of(startIndex, size, Sort.by(Direction.DESC, "name"));
 		return service.getPerson(pageRequest);
 	}
 
 	@GetMapping("/person/{id}")
 	public Person getPerson(@PathVariable("id") Integer personId) {
-		System.out.println("GET: /person/{id} called");
+		LOGGER.info("GET: /person/{id} id: {}", personId);
 		return service.getPerson(personId);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/person")
 	public void createPerson(@RequestBody Person person) {
-		System.out.println("POST: /person called");
+		LOGGER.info("POST: /person Requestbody : {} ", person);
 		service.savePerson(person);
 	}
 
 	@PutMapping("/person/{id}")
 	public void updatePerson(@PathVariable("id") Integer personid, @RequestBody Person person) {
-		System.out.println("PUT: /person/{id} called");
+		LOGGER.info("PUT: /person/{id}  id: {}, Requestbody: {}", person);
 		service.updatePerson(personid, person);
 	}
 
